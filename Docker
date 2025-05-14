@@ -1,0 +1,101 @@
+1. FROM
+Mục đích: Chỉ định base image để xây dựng image mới.
+Ví dụ:
+
+dockerfile
+FROM ubuntu:22.04
+FROM python:3.9-slim
+2. RUN
+Mục đích: Thực thi lệnh trong quá trình build image.
+Ví dụ:
+
+dockerfile
+RUN apt-get update && apt-get install -y curl
+RUN pip install flask
+3. COPY
+Mục đích: Sao chép file/từ host vào image.
+Ví dụ:
+
+dockerfile
+COPY ./app /app           # Copy thư mục
+COPY requirements.txt .    # Copy file
+4. ADD
+Mục đích: Tương tự COPY nhưng hỗ trợ tải từ URL và giải nén file.
+Ví dụ:
+
+dockerfile
+ADD https://example.com/file.tar.gz /tmp
+ADD data.tar.gz /app/data   # Tự động giải nén
+5. WORKDIR
+Mục đích: Đặt thư mục làm việc mặc định.
+Ví dụ:
+
+dockerfile
+WORKDIR /app
+RUN pwd  # Kết quả: /app
+6. ENV
+Mục đích: Đặt biến môi trường.
+Ví dụ:
+
+dockerfile
+ENV FLASK_APP=app.py
+ENV DB_HOST=mysql
+7. EXPOSE
+Mục đích: Khai báo cổng mạng mà container sẽ lắng nghe.
+Ví dụ:
+
+dockerfile
+EXPOSE 80
+EXPOSE 443
+8. CMD
+Mục đích: Đặt lệnh mặc định khi container chạy (có thể ghi đè bằng docker run).
+Ví dụ:
+
+dockerfile
+CMD ["python", "app.py"]    # Exec form (khuyến nghị)
+CMD python app.py           # Shell form
+9. ENTRYPOINT
+Mục đích: Đặt lệnh chính khi container chạy (khó ghi đè hơn CMD).
+Ví dụ:
+
+dockerfile
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+10. VOLUME
+Mục đích: Tạo điểm gắn volume để lưu trữ dữ liệu.
+Ví dụ:
+
+dockerfile
+VOLUME /var/lib/mysql
+11. USER
+Mục đích: Chuyển sang user khác (không dùng root).
+Ví dụ:
+
+dockerfile
+USER nobody
+USER 1000
+12. ARG
+Mục đích: Đặt biến build-time (chỉ dùng khi build).
+Ví dụ:
+
+dockerfile
+ARG VERSION=latest
+FROM ubuntu:$VERSION
+13. LABEL
+Mục đích: Thêm metadata vào image.
+Ví dụ:
+
+dockerfile
+LABEL maintainer="dev@example.com"
+LABEL version="1.0"
+14. HEALTHCHECK
+Mục đích: Kiểm tra trạng thái sức khỏe của container.
+Ví dụ:
+
+dockerfile
+HEALTHCHECK --interval=5s CMD curl -f http://localhost/ || exit 1
+15. ONBUILD
+Mục đích: Chỉ thị thực thi khi image được dùng làm base image.
+Ví dụ:
+
+dockerfile
+ONBUILD COPY . /app
